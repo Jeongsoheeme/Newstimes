@@ -1,8 +1,8 @@
 
 
 const getLatestNews =async()=>{
-    let url = new URL(`https://api.newscatcherapi.com/vs/latest_headlines?countries=US&topic=business&page_size=2`);
-    let header = new Headers({'x-api-key':'5S0-ZbVwEuPY3VCOCZiQRbrO0tfE2ShW7_38rQiAFmk'});
+    let url = new URL(`https://api.newscatcherapi.com/v2/search?q=Apple&from='2022/07/19' &countries=KR&page_size=10`);
+    let header = new Headers({'x-api-key':'C2DcVWEX9pANNudnpY7oGXXtfK7spQ3yXQQQdEf4mpA'});
 
     let response = await fetch(url,{headers: header });
     console.log(response);
