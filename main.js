@@ -19,7 +19,6 @@ const getLatestNews = async()=>{
     console.log(news);
 
     render()
-<<<<<<< HEAD
 };
 
 const getNewsByTopic = async (event) =>{
@@ -74,27 +73,4 @@ const render = () => {
 };
 
 searchButton.addEventListener("click",getNewsByKeyword);
-=======
-};
-
-const render = () => {
-    let newsHTML = "";
-    newsHTML = news
-    .map(item => {
-        return `<div class="row news">
-        <div class="col-lg-4">
-            <img class="news-img-size" src="${item.media}" alt="">
-        </div>
-        <div class="col-lg-8">
-            <h2>${item.title}</h2>
-            <p>${item.summary}</p>
-            <div>${item.rights} / ${item.published_date}</div>
-        </div>
-    </div>`
-    }).join('');
-
-    document.getElementById("news-board").innerHTML=newsHTML
-}
-
->>>>>>> 19e1eef20fb352cef7a9cff60fb7e70f75038fd5
 getLatestNews();
