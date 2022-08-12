@@ -10,6 +10,27 @@ const getLatestNews = async()=>{
     let data = await response.json();
     news = data.articles
     console.log(news);
+
+    render()
 };
+
+const render = () => {
+    let newsHTML = "";
+    newsHTML = news
+    .map(item => {
+        return `<div class="row news">
+        <div class="col-lg-4">
+            <img class="news-img-size" src="${item.media}" alt="">
+        </div>
+        <div class="col-lg-8">
+            <h2>${item.title}</h2>
+            <p>${item.summary}</p>
+            <div>${item.rights} / ${item.published_date}</div>
+        </div>
+    </div>`
+    }).join('');
+
+    document.getElementById("news-board").innerHTML=newsHTML
+}
 
 getLatestNews();
