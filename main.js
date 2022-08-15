@@ -1,4 +1,6 @@
 let news = [];
+let page = 1;
+let total_page = 0;
 let menus = document.querySelectorAll(".menus button");
 menus.forEach(menu=> menu.addEventListener("click", (event)=>getNewsByTopic(event) ))
 
@@ -20,9 +22,13 @@ const getNews = async() =>{
             if(data.total_hits == 0){
                 throw new Error("검색된 결과값이 없습니다")
             }
+            console.log("받는데이타",data);
             news = data.articles;
+            total_pages = data.total_pages;
+            page = data.page;
             console.log(news);
             render();
+            pagenation();
         }else{
             throw new Error(data.message)
         }
@@ -83,6 +89,24 @@ const errorRender = (message) => {
     ${message}
   </div>`
     document.getElementById("news-board").innerHTML = errorHTML
+}
+
+const pagenation = () =>{
+    let pagenationHTML = ``
+    // total_page
+    // page
+    // page group
+    let pageGroup = Math.ceil(page/5)
+    //last
+    let last = pageGroup*5
+    //first
+    let first = last - 4
+    //first-last 페이지 프린트
+
+    for(let i=first; i<=last;i++){
+        pagenationHTML+= `<li class="page-item"><a class="page-link" href="#">${i}</a></li>`;
+    }
+    document.querySelector(".pagination").innerHTML = pagenationHTML;
 }
 
 searchButton.addEventListener("click",getNewsByKeyword);
