@@ -14,6 +14,8 @@ let url;
 const getNews = async() =>{
     try{
         let header = new Headers({'x-api-key':'C2DcVWEX9pANNudnpY7oGXXtfK7spQ3yXQQQdEf4mpA',});
+        url.searchParams.set('page', page);
+        console.log("url",url);
         // 데이터보내는방식 3가지 : ajax, http, fetch
         //async(비동기)와 await는 세트!
         let response = await fetch(url,{headers:header}); 
@@ -103,11 +105,37 @@ const pagenation = () =>{
     let first = last - 4
     //first-last 페이지 프린트
 
+    //total page 3일 경우 3개의 페이지만 프린트 하는법 
+    // << >> 버튼 만들어주기
+    // 내가 그룹1일때 << < 버튼 없다
+    // 내가 그룹 마지막일때 >> > 버튼이 없다
+
+
+    pagenationHTML = `<li class="page-item">
+    <a class="page-link" href="#" aria-label="Previous" onclick="moveToPage(${page-1}")">
+      <span aria-hidden="true">&lt;</span>
+    </a>
+  </li>`;
     for(let i=first; i<=last;i++){
-        pagenationHTML+= `<li class="page-item"><a class="page-link" href="#">${i}</a></li>`;
+        pagenationHTML+= `<li class="page-item ${page==i?"active":""}"><a class="page-link" href="#" onclick="moveToPage(${i})">${i}</a></li>`;
     }
+
+    pagenationHTML+=`<li class="page-item">
+    <a class="page-link" href="#" aria-label="Next" onclick="moveToPage(${page+1})">
+    <span aria-hidden="true">&gt;</span>
+    </a>
+    </li>`;
+
     document.querySelector(".pagination").innerHTML = pagenationHTML;
 }
 
+const moveToPage = (pageNum) =>{
+    //1. 이동하고싶은 페이지를 알아야한다
+    page = pageNum
+    
+    //2. 이동하고 싶은 페이지를 가지고 api를 다시 호출해주자
+    getNews();
+    //3.
+}
 searchButton.addEventListener("click",getNewsByKeyword);
 getLatestNews();
