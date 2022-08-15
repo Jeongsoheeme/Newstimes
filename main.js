@@ -10,16 +10,29 @@ let url;
 //api 호출 함수를 부른다
 
 const getNews = async() =>{
-    let header = new Headers({'x-api-key':'C2DcVWEX9pANNudnpY7oGXXtfK7spQ3yXQQQdEf4mpA',});
-    // 데이터보내는방식 3가지 : ajax, http, fetch
-    //async(비동기)와 await는 세트!
-    let response = await fetch(url,{headers:header}); 
-    let data = await response.json();
-    news = data.articles
-    console.log(news);
+    try{
+        let header = new Headers({'x-api-key':'C2DcVWEX9pANNudnpY7oGXXtfK7spQ3yXQQQdEf4mpA',});
+        // 데이터보내는방식 3가지 : ajax, http, fetch
+        //async(비동기)와 await는 세트!
+        let response = await fetch(url,{headers:header}); 
+        let data = await response.json();
+        if(response.status == 200){
+            if(data.total_hits == 0){
+                throw new Error("검색된 결과값이 없습니다")
+            }
+            news = data.articles;
+            console.log(news);
+            render();
+        }else{
+            throw new Error(data.message)
+        }
 
-    render();
-}
+    }catch(error){
+        console.log("잡힌 에러는",error.message);
+        errorRender(error.message);
+    }
+
+};
 
 const getLatestNews = async()=>{
     url = new URL(`https://api.newscatcherapi.com/v2/latest_headlines?countries=KR&page_size=10`);
@@ -64,6 +77,13 @@ const render = () => {
 
     document.getElementById("news-board").innerHTML=newsHTML
 };
+
+const errorRender = (message) => {
+    let errorHTML = `<div class="alert alert-danger text-center" role="alert">
+    ${message}
+  </div>`
+    document.getElementById("news-board").innerHTML = errorHTML
+}
 
 searchButton.addEventListener("click",getNewsByKeyword);
 getLatestNews();
